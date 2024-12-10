@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import useFormulario from "../../hooks/forms/registerFormHook";
+import axios from "axios";
+import iu from '../../img/juego.png';
 
 export const RegisterForm = () => {
   const initialFormState = {
@@ -20,6 +22,20 @@ export const RegisterForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Formulario enviado:", formData);
+
+    // Enviar los datos del formulario al backend
+    axios
+      .post("http://localhost:8080/api/torneo/concursante/create", formData)
+      .then((response) => {
+        console.log("Datos enviados correctamente:", response.data);
+        alert("Datos enviados correctamente");
+        // Opcional: manejar la respuesta del servidor
+      })
+      .catch((error) => {
+        console.error("Error al enviar los datos:", error);
+        // Opcional: manejar el error
+      });
+
     resetForm();
   };
 
@@ -34,6 +50,7 @@ export const RegisterForm = () => {
           value={formData.np}
           onChange={handleChange}
           required
+          maxlength="6"
         />
       </div>
       <div className="form-group">
@@ -48,24 +65,24 @@ export const RegisterForm = () => {
         />
       </div>
       <div className="form-group" id="apellidos">
-        <label htmlFor="primerApellido">
-          Primer Apellido:{" "}
+        <label htmlFor="apellido1">
+          Primer Apellido:
           <input
             type="text"
-            id="primerApellido"
-            name="primerApellido"
-            value={formData.primerApellido}
+            id="apellido1"
+            name="apellido1"
+            value={formData.apellido1}
             onChange={handleChange}
             required
           />
         </label>
-        <label htmlFor="segundoApellido">
-          Segundo Apellido:{" "}
+        <label htmlFor="apellido2">
+          Segundo Apellido:
           <input
             type="text"
-            id="segundoApellido"
-            name="segundoApellido"
-            value={formData.segundoApellido}
+            id="apellido2"
+            name="apellido2"
+            value={formData.apellido2}
             onChange={handleChange}
             required
           />
@@ -75,22 +92,39 @@ export const RegisterForm = () => {
       <div className="form-group" id="drops">
         <label htmlFor="curso">
           Curso:
-          <select name="" id="">
-            <option value="">Primero</option>
-            <option value="">Segundo</option>
+          <select
+            name="curso"
+            id="curso"
+            value={formData.curso}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled selected>
+              Seleccione curso
+            </option>
+            <option value="1">Primero</option>
+            <option value="2">Segundo</option>
           </select>
         </label>
-
         <label htmlFor="ciclo">
           Ciclo:
-          <select name="" id="">
-            <option value="">DAM</option>
-            <option value="">ASIR</option>
+          <select
+            name="ciclo"
+            id="ciclo"
+            value={formData.ciclo}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled selected>
+              Seleccione ciclo
+            </option>
+            <option value="DAM">DAM</option>
+            <option value="ASIR">ASIR</option>
           </select>
         </label>
       </div>
+      <label>Juegos que desea jugar:</label>
       <div className="form-group" id="juegos">
-        <label>Juegos que desea jugar:</label>
 
         {juegosDisponibles.map((juego) => (
           <div key={juego}>
@@ -101,7 +135,10 @@ export const RegisterForm = () => {
               checked={formData.juegos.includes(juego)}
               onChange={handleCheckboxChange}
             />
-            <label htmlFor={juego}>{juego}</label>
+            <label htmlFor={juego}>
+              {juego}
+              
+              </label>
           </div>
         ))}
       </div>
