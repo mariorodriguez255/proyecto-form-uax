@@ -21,19 +21,25 @@ export const RegisterForm = () => {
     e.preventDefault();
     console.log("Formulario enviado:", formData);
 
-    // Enviar los datos del formulario al backend
     axios
       .post("http://localhost:8080/api/torneo/concursante/create", formData)
       .then((response) => {
         console.log("Datos enviados correctamente:", response.data);
         alert("Datos enviados correctamente");
-        // Opcional: manejar la respuesta del servidor
       })
       .catch((error) => {
         console.error("Error al enviar los datos:", error);
-        // Opcional: manejar el error
       });
-
+    const payload = {
+      np: formData.np,
+      nombre: formData.nombre,
+      primerApellido: formData.apellido1,
+      segundoApellido: formData.apellido2,
+      curso: formData.curso,
+      ciclo: formData.ciclo,
+      juegos: formData.juegos,
+    };
+    console.log("Payload a enviar:", JSON.stringify(payload));
     resetForm();
   };
 
@@ -97,7 +103,7 @@ export const RegisterForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="" disabled selected>
+            <option disabled selected>
               Seleccione curso
             </option>
             <option value="1">Primero</option>
@@ -113,7 +119,7 @@ export const RegisterForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="" disabled selected>
+            <option disabled selected>
               Seleccione ciclo
             </option>
             <option value="DAM">DAM</option>
@@ -123,7 +129,6 @@ export const RegisterForm = () => {
       </div>
       <label>Juegos que desea jugar:</label>
       <div className="form-group" id="juegos">
-
         {juegosDisponibles.map((juego) => (
           <div key={juego}>
             <input
@@ -133,10 +138,7 @@ export const RegisterForm = () => {
               checked={formData.juegos.includes(juego)}
               onChange={handleCheckboxChange}
             />
-            <label htmlFor={juego}>
-              {juego}
-              
-              </label>
+            <label htmlFor={juego}>{juego}</label>
           </div>
         ))}
       </div>
