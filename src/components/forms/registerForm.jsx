@@ -1,8 +1,6 @@
 import React from "react";
 import useFormulario from "../../hooks/forms/registerFormHook";
 import axios from "axios";
-import iu from '../../img/juego.png';
-
 export const RegisterForm = () => {
   const initialFormState = {
     np: "",
