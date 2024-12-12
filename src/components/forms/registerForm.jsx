@@ -5,14 +5,15 @@ export const RegisterForm = () => {
   const initialFormState = {
     np: "",
     nombre: "",
-    primerApellido: "",
-    segundoApellido: "",
+    apellido1: "",
+    apellido2: "",
     curso: "",
     ciclo: "",
     juegos: [],
   };
 
   const juegosDisponibles = ["Minecraft HunterGames", "CS2", "Fortnite", "LoL"];
+
 
   const { formData, handleChange, handleCheckboxChange, resetForm } =
     useFormulario(initialFormState);
@@ -24,22 +25,8 @@ export const RegisterForm = () => {
     axios
       .post("http://localhost:8080/api/torneo/concursante/create", formData)
       .then((response) => {
-        console.log("Datos enviados correctamente:", response.data);
         alert("Datos enviados correctamente");
       })
-      .catch((error) => {
-        console.error("Error al enviar los datos:", error);
-      });
-    const payload = {
-      np: formData.np,
-      nombre: formData.nombre,
-      primerApellido: formData.apellido1,
-      segundoApellido: formData.apellido2,
-      curso: formData.curso,
-      ciclo: formData.ciclo,
-      juegos: formData.juegos,
-    };
-    console.log("Payload a enviar:", JSON.stringify(payload));
     resetForm();
   };
 
@@ -93,6 +80,7 @@ export const RegisterForm = () => {
         </label>
       </div>
       <br />
+
       <div className="form-group" id="drops">
         <label htmlFor="curso">
           Curso:
@@ -103,7 +91,7 @@ export const RegisterForm = () => {
             onChange={handleChange}
             required
           >
-            <option disabled selected>
+            <option value="" disabled>
               Seleccione curso
             </option>
             <option value="1">Primero</option>
@@ -119,7 +107,7 @@ export const RegisterForm = () => {
             onChange={handleChange}
             required
           >
-            <option disabled selected>
+            <option value="" disabled>
               Seleccione ciclo
             </option>
             <option value="DAM">DAM</option>
@@ -127,6 +115,7 @@ export const RegisterForm = () => {
           </select>
         </label>
       </div>
+
       <label>Juegos que desea jugar:</label>
       <div className="form-group" id="juegos">
         {juegosDisponibles.map((juego) => (

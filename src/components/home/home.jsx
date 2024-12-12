@@ -1,5 +1,7 @@
 import { RegisterForm } from '../forms/registerForm';
 import imguax from '../../img/imguax2.png';
+import { AlertForm } from '../forms/alertForm';
+
 
 
 export const Home = () => {
