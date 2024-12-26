@@ -1,6 +1,8 @@
 import React from "react";
+
 import useFormulario from "../../hooks/forms/registerFormHook";
 import axios from "axios";
+
 export const RegisterForm = () => {
   const initialFormState = {
     np: "",
@@ -12,8 +14,10 @@ export const RegisterForm = () => {
     juegos: [],
   };
 
-  const juegosDisponibles = ["Minecraft HunterGames", "CS2", "Fortnite", "LoL"];
-
+  const juegos = [
+    { id: 1, nombre: "Minecraft Juegos del Hambre" },
+    { id: 2, nombre: "Counter Strike" },
+  ];
 
   const { formData, handleChange, handleCheckboxChange, resetForm } =
     useFormulario(initialFormState);
@@ -22,11 +26,7 @@ export const RegisterForm = () => {
     e.preventDefault();
     console.log("Formulario enviado:", formData);
 
-    axios
-      .post("http://localhost:8080/api/torneo/concursante/create", formData)
-      .then((response) => {
-        alert("Datos enviados correctamente");
-      })
+    axios.post("http://localhost:8080/api/torneo/concursante/create", formData);
     resetForm();
   };
 
@@ -118,16 +118,16 @@ export const RegisterForm = () => {
 
       <label>Juegos que desea jugar:</label>
       <div className="form-group" id="juegos">
-        {juegosDisponibles.map((juego) => (
-          <div key={juego}>
+        {juegos.map((juego) => (
+          <div key={juego.id}>
             <input
               type="checkbox"
-              id={juego}
-              value={juego}
-              checked={formData.juegos.includes(juego)}
+              id={juego.id}
+              value={juego.id}
+              checked={formData.juegos.includes(juego.id)}
               onChange={handleCheckboxChange}
             />
-            <label htmlFor={juego}>{juego}</label>
+            <label htmlFor={juego.id}>{juego.nombre}</label>
           </div>
         ))}
       </div>
